@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!--Author: Phuoc  -->
+<mapper namespace="category">
+
+	<resultMap type="com.store.model.Category" id="result">
+		<result property="id" column = "id"/>
+		<result property="category_name" column="category_name"/>
+		<result property="category_image" column="category_image"/>
+	</resultMap>
+
+
+	<select id="selectAllcategory" parameterType="com.store.model.Category" resultMap="result">
+	<![CDATA[
+		select * from category;
+	]]>
+	</select>
+
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="user">
+
+	<resultMap id = "result" type = "com.store.np.springsecurityjwt.user.User">
+	   <result property = "id" column = "id"/>
+	   <result property = "full_name" column = "full_name"/>
+	   <result property = "gender" column = "gender"/>
+	   <result property = "date_of_birth" column = "date_of_birth"/>
+	   <result property = "user_name" column = "user_name"/>
+	   <result property = "email" column = "email"/>
+	   <result property = "password" column = "password"/>
+	   <result property = "phone_number" column = "phone_number"/>
+	   <result property = "img_profile" column = "img_profile"/>
+	   <result property = "role" column = "role"/>
+	</resultMap>
+	
+	<!-- 
+	===========================================================
+	Query
+	
+	private int id;
+	private String full_name;
+	private String gender;
+	private Date date_of_birth;
+	private String user_name;
+	private String email;
+	private String password;
+	private String phone_number;
+	private String address;
+	private String img_profile;
+	private String role;
+	=========================================================== -->
+	<select id="findByUsername" parameterType="java.lang.String" resultType="com.store.np.springsecurityjwt.user.User"> 
+																			                               
+	<![CDATA[
+		SELECT full_name, gender,date_of_birth,user_name,email, password, phone_number, address, img_profile, role
+		FROM customer
+		WHERE user_name = #{username} limit 1;
+	]]>	
+	</select>	
+   
+</mapper>

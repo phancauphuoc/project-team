@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Author: hieun -->
+
+<mapper namespace="invoice">
+
+	<resultMap id = "result" type = "com.store.model.Invoice">
+	   <result property = "id" column = "id"/>
+	   <result property = "customerId" column = "customer_id"/>
+	   <result property = "orderDate" column = "order_date"/>
+	   <result property = "receiptDate" column = "receipt_date"/>
+	   <result property = "state" column = "state"/>
+	</resultMap>
+
+	<select id="selectAllInvoices" resultMap="result">
+	<![CDATA[
+		SELECT i.id, i.customer_id,i.order_date, i.receipt_date, i.state FROM invoice i
+			WHERE i.state = 1 AND YEAR(i.receipt_date) = YEAR(CURDATE());
+	]]>	
+	</select>
+	
+	<select id="selectAllOrders" resultMap="result">
+	<![CDATA[
+		SELECT i.id, i.customer_id,i.order_date, i.receipt_date, i.state FROM invoice i
+			WHERE YEAR(i.receipt_date) = YEAR(CURDATE())
+			ORDER BY (i.order_date) DESC ;
+	]]>	
+	</select>
+		
+	<select id="selectOneOrder" resultMap="result">
+	<![CDATA[
+		SELECT i.id, i.customer_id,i.order_date, i.receipt_date, i.state FROM invoice i
+			WHERE id = #{id}
+			ORDER BY (i.order_date) DESC ;
+	]]>	
+	</select>
+	
+	<update id="updateOrder" parameterType="map">
+	<![CDATA[ 
+		update invoice set receipt_date = CURRENT_TIMESTAMP() , state = #{state}
+			where id = #{id};
+	]]>
+	</update>
+	
+	
+	<select id="selectInvoiceDetail" resultType="com.store.dto.InvoiceDetailDto" parameterType="int">
+	<![CDATA[
+		SELECT c.full_name, c.phone_number, c.address, p.product_name, p.product_img, inde.quantity, inde.price, i.order_date, i.receipt_date
+			FROM invoice_detail inde 
+				LEFT JOIN invoice  i ON inde.id_invoice = i.id 
+				LEFT JOIN product  p ON inde.id_product = p.id 
+				LEFT JOIN customer c ON i.customer_id   = c.id
+			WHERE inde.id_invoice = #{id};
+	]]>	
+	</select>
+	
+	<select id="selectInforCusInVoice" resultType="com.store.dto.InforCusInvoiceDto" parameterType="int">
+	<![CDATA[
+		SELECT c.full_name, c.phone_number, c.address, i.order_date, i.receipt_date
+			FROM  invoice  i 
+				LEFT JOIN customer c ON i.customer_id = c.id
+			WHERE i.id = #{id};
+	]]>	
+	</select>
+	
+	
+	<select id="selectProInvoiceDetail" resultType="com.store.dto.InforProInvoiceDetailDto" parameterType="int">
+	<![CDATA[
+		SELECT  p.product_name, p.product_img, inde.quantity, inde.price
+			FROM invoice_detail inde 
+				LEFT JOIN invoice  i ON inde.id_invoice = i.id 
+				LEFT JOIN product  p ON inde.id_product = p.id 
+			WHERE i.id = #{id};
+
+	]]>	
+	</select>
+</mapper>	

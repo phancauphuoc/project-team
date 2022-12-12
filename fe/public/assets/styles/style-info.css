@@ -1,0 +1,106 @@
+.infomation {
+    height: 500px;
+    width: 100%;
+}
+
+.info1 {
+    background-color: bisque;
+    height: 80px;
+}
+
+.info1 h3 {
+    margin: 20px;
+    padding: 27px;
+}
+
+.info2 {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    background-color: lightgrey;
+    margin-top: 20px;
+}
+
+.info-img {
+    width: 300px;
+}
+
+.info-context {
+    width: 700px;
+    font-size: 21px;
+}
+
+.info-img img{
+    height: 250px;
+    width: 250px;
+    padding: 19px;
+    border-radius: 150px;
+}
+
+.info-context{
+    padding-top: 60px;
+    padding-left: 20px;
+}
+
+.info3{
+    height: 100px;
+    width: 100%;
+    background-color: lightgrey;
+    margin-top: 30px;
+    font-size: 21px;
+    display: flex;
+}
+.info3-1{
+    width: 150px;
+    height: 100px;
+}
+.info3-2{
+    width: 700px;
+    height: 100px;
+    margin-top: 35px;
+}
+.info3 img{
+    height: 80px;
+    width: 80px;
+    margin-top: 10px;
+    margin-left: 35px;
+    border-radius: 27px;
+}
+.info3 a{
+    text-decoration: none;
+    color: black;
+}
+
+.info4{
+    height: 100px;
+    width: 100%;
+    background-color: lightgrey;
+    margin-top: 10px;
+    font-size: 21px;
+    display: flex;
+}
+.info4-1{
+    width: 150px;
+    height: 100px;
+}
+.info4-2{
+    width: 700px;
+    height: 100px;
+    margin-top: 35px;
+}
+.info4 img{
+    height: 80px;
+    width: 80px;
+    margin-top: 10px;
+    margin-left: 35px;
+    border-radius: 27px;
+}
+.info4 a{
+    text-decoration: none;
+    color: black;
+}
+
+.infomation{
+    margin-top: 200px;
+    margin-bottom: 250px
+}

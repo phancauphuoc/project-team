@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="customer">
+
+	<resultMap id="result" type="com.store.model.Customer" >
+		<result property="id" column="id" />
+		<result property="userName" column="user_name" />
+		<result property="fullName" column="full_name" />
+		<result property="gender" column="gender" />
+		<result property="dateOfBirth" column="date_of_birth" />
+		<result property="email" column="email" />
+		<result property="password" column="password" />
+		<result property="phoneNumber" column="phone_number" />
+		<result property="address" column="address" />
+		<result property="imgProfile" column="img_profile" />
+		<result property="role" column="role" />	
+	</resultMap>
+	
+
+	<select id="selectAllCustomer" parameterType="com.store.model.Customer" resultMap = "result">
+	<![CDATA[
+		select * from customer;
+	]]>	
+	</select>
+	
+	<select id="getByName" parameterType="com.store.model.Customer" resultMap="result">
+	<![CDATA[
+		select * from customer where full_name=#{fullName};
+	]]>
+	</select>
+	
+	<select id="getByEmail" parameterType="com.store.model.Customer" resultMap = "result">
+	<![CDATA[
+		select * from customer where email = #{email};
+	]]>	
+	</select>
+	
+	<insert id="saveCus" parameterType="com.store.model.Customer">
+	<![CDATA[
+		insert into customer (user_name, full_name, gender, date_of_birth, email, password, phone_number, address, img_profile, role) 
+		values (#{userName},#{fullName}, #{gender}, #{dateOfBirth}, #{email}, #{password}, #{phoneNumber}, #{address}, #{imgProfile}, 'ROLE_USER');
+	]]>	
+	</insert>	
+	
+	<update id = "updateCus" parameterType = "com.store.model.Customer"  >
+	<![CDATA[
+	      UPDATE customer
+	      	SET user_name = #{userName}, full_name=#{fullName}, gender = #{gender}, date_of_birth = #{dateOfBirth}, email=#{email}, password=#{password}, phone_number=#{phoneNumber}, address=#{address}, img_profile=#{imgProfile} 
+	      	WHERE id = #{id};
+   ]]>
+   </update>
+   
+   <select id="getOneCus" parameterType="com.store.model.Customer" resultMap = "result">
+   	<![CDATA[
+   		select * from customer limit 1;
+   	]]>
+   </select>
+   
+   <select id="getOneCusById" parameterType="com.store.model.Customer" resultMap="result">
+   	<![CDATA[
+   		select * from customer where id = #{id};
+   	]]>
+   </select>
+   
+   <select id="statisticalCus" parameterType="String" resultType="int">
+   	<![CDATA[
+   		select count(*)
+   		from customer
+   		where gender = #{gender};
+   	]]>
+   </select>
+   
+   <select id="selectCusByGender" parameterType="com.store.model.Customer" resultMap="result">
+   	<![CDATA[
+   		select *
+   		from customer
+   		where gender = #{gender};
+   	]]>
+   </select>
+	
+	
+</mapper>

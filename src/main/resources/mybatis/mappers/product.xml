@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Author: hieun -->
+
+<mapper namespace="product">
+
+	<resultMap id = "result" type = "com.store.model.Product">
+	   <result property = "id" column = "id"/>
+	   <result property = "productName" column = "product_name"/>
+	   <result property = "description" column = "description"/>
+	   <result property = "unitPrice" column = "unit_price"/>
+	   <result property = "inventory" column = "inventory"/>
+	   <result property = "categoryId" column = "category_id"/>
+	   <result property = "productImg" column = "product_img"/>
+	   <result property = "promotion" column = "promotion"/>
+	   <result property = "rate" column = "rate"/>
+	   <result property = "status" column = "status"/>
+	</resultMap>
+	
+	
+	<select id="selectAllProduct" parameterType="com.store.model.Product" resultMap = "result">
+	<![CDATA[
+		select * from product ORDER BY id DESC;
+	]]>	
+	</select>
+	
+	<select id="selectTenProduct" parameterType="com.store.model.Product" resultMap = "result">
+	<![CDATA[
+		select * from product limit 5;
+	]]>	
+	</select>
+	
+	<select id="selectProductByCategory" parameterType="com.store.model.Product" resultMap = "result">
+	<![CDATA[
+		select * from product where category_id = #{categoryId};
+	]]>	
+	</select>
+	
+	<select id="selectTenProductByCategory" parameterType="com.store.model.Product" resultMap = "result">
+	<![CDATA[
+		select * from product where category_id = #{categoryId} limit 3;
+	]]>	
+	</select>
+	
+	<select id="selectProductById" parameterType="com.store.model.Product" resultMap = "result">
+	<![CDATA[
+		select * from product where id = #{id};
+	]]>	
+	</select>
+	
+	<insert id="insertProduct" parameterType="com.store.model.Product">
+	<![CDATA[
+		insert into product (product_name, `description`, unit_price, inventory, category_id, product_img, promotion, rate, `status`) 
+			values (#{productName},#{description},#{unitPrice},#{inventory},#{categoryId},#{productImg},#{promotion},#{rate},#{status});
+	]]>	
+	</insert>
+	
+	<update id="updateProduct" parameterType="com.store.model.Product">
+	<![CDATA[ 
+		update product set product_name = #{productName}, `description` = #{description}, unit_price = #{unitPrice}, inventory = #{inventory}, category_id = #{categoryId},
+			product_img= #{productImg}, promotion= #{promotion}, rate= #{rate}, `status`= #{status}
+			where id = #{id};
+	]]>
+	</update>
+	
+</mapper>	

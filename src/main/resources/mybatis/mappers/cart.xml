@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="cart">
+
+	<!-- 
+	===========================================================
+	Query
+	=========================================================== -->
+	<insert id="addToCart" parameterType="com.store.model.Cart"> <!-- param nhận vào: 1 Cart-->
+																 <!-- id tự sinh, nên lúc insert ko cần insert id (nhìn code phía dưới)-->
+																 <!-- vì nó nhận  -->
+	<![CDATA[
+		insert into shopping_cart (user_name,id_product,quantity) 
+		values (#{user_name}, #{id_product}, #{quantity})
+	]]>	
+	</insert>
+
+	<!--________________________________________________________ -->
+	<select id="viewCart" parameterType="java.lang.String" resultType="com.store.dto.CartItemResponseDto"> 
+																			                               
+	<![CDATA[
+		SELECT product_name, unit_price,quantity
+		FROM shopping_cart AS C
+		INNER JOIN product AS P ON C.id_product = P.id
+		WHERE user_name = #{username};
+	]]>	
+	</select>	
+	
+	<select id="viewCart2" parameterType="java.lang.String" resultType="com.store.resultType.CartResultType"> 
+																			                               
+	<![CDATA[
+		SELECT C.id, product_img, product_name, unit_price,quantity
+		FROM shopping_cart AS C
+		INNER JOIN product AS P ON C.id_product = P.id
+		WHERE user_name = #{username};
+	]]>	
+	</select>
+
+	
+	<!--________________________________________________________ -->
+	<delete id = "deleteItemInCart" parameterType = "int">
+	<![CDATA[
+     	DELETE from shopping_cart WHERE id = #{id};
+    ]]>	
+    </delete>
+	
+	<!--________________________________________________________ -->
+	<update id = "increaseQuantityItemInCart" parameterType = "int">
+	<![CDATA[
+	      UPDATE shopping_cart 
+	      SET quantity = quantity + 1
+	      WHERE id = #{id};
+   ]]>
+   </update>
+   
+   
+   
+   <!--________________________________________________________ -->
+	<update id = "decreaseQuantityItemInCart" parameterType = "int">
+	<![CDATA[
+	      UPDATE shopping_cart 
+	      SET quantity = quantity - 1
+	      WHERE id = #{id};
+   ]]>
+   </update>
+   
+</mapper>

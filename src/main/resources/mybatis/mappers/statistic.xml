@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Author: hieun -->
+
+<mapper namespace="statistic">
+
+	<resultMap id = "result" type = "com.store.dto.StatisticDto">
+	   <result property = "idProduct" column = "id_product"/>
+	   <result property = "productName" column = "product_name"/>
+	   <result property = "productImg" column = "product_img"/>
+	   <result property = "quantity" column = "quantity"/>
+	   <result property = "amount" column = "amount"/>
+	   <result property = "receiptDate" column = "receipt_date"/>
+	</resultMap>
+
+	<select id="selectTotalRevenue" resultType="int">
+	<![CDATA[
+		SELECT SUM((price*quantity)) AS amout 
+			FROM invoice_detail inde 
+			INNER JOIN invoice i 
+			ON inde.id_invoice = i.id
+			WHERE i.state = 1 AND YEAR(i.receipt_date) = YEAR(CURDATE());
+	]]>	
+	</select>
+	
+	<select id="selectTotalRevenueByMonth" parameterType="int" resultType="int">
+	<![CDATA[
+		SELECT SUM((price*quantity)) AS amount 
+			FROM invoice i, invoice_detail inde 
+			WHERE i.id = inde.id_invoice 
+			AND i.state = 1
+			AND YEAR(i.receipt_date) = YEAR(CURDATE())
+			AND Month(i.receipt_date) = #{month};
+	]]>	
+	</select>
+	
+	<select id="selectMaxMonth" parameterType="int" resultType="int">
+	<![CDATA[
+		SELECT MAX(Month(receipt_date)) AS months FROM invoice i  
+			WHERE i.state = 1 AND YEAR(i.receipt_date) = YEAR(CURDATE());
+	]]>	
+	</select>
+	
+	<select id="selectTop4Seller" resultType="map" resultMap="result">
+	<![CDATA[
+		SELECT inde.id_product, p.product_name, p.product_img, SUM(inde.quantity) AS quantity, SUM(inde.quantity*inde.price) AS amount, YEAR(i.receipt_date) AS receipt_date  
+			FROM ((invoice_detail inde INNER JOIN invoice i ON inde.id_invoice = i.id) INNER JOIN product p ON inde.id_product = p.id)
+			WHERE i.state = 1 AND YEAR(i.receipt_date) = YEAR(CURDATE())
+			GROUP BY inde.id_product 
+			ORDER BY SUM(inde.quantity) DESC 
+			LIMIT 4;
+	]]>	
+	</select>
+	
+	<select id="selectOneTopProductWithMonth" parameterType="int" resultMap="result" resultType="com.store.dto.StatisticDto">
+	<![CDATA[
+		SELECT inde.id_product, SUM(inde.quantity) AS quantity, SUM(inde.quantity*inde.price) AS amount, MONTH(i.receipt_date) AS receipt_date 
+			FROM invoice_detail inde INNER JOIN invoice i ON inde.id_invoice = i.id 
+			WHERE i.state = 1 AND inde.id_product = #{idProduct}
+			AND  YEAR(i.receipt_date) = YEAR(CURDATE())
+			GROUP BY MONTH(i.receipt_date);
+	]]>	
+	</select>
+
+
+
+	
+</mapper>	
